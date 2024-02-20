@@ -6,7 +6,8 @@ const initialState = {
   filter: [],
   singleProduct: [],
   status: null,
-  addproductstatus:null
+  addproductstatus:null,
+  UpdateProductStatus:"pending"
 };
 
 const FETCH_PRODUCTS = 'products/fetch';
@@ -100,8 +101,14 @@ const ProductSlice = createSlice({
     [AddProduct.rejected]: (state, action) => {
       return {
         ...state,
-        addproductstatus: 'failed to add',
+        addproductstatus: 'failed',
       };
+    },
+    [UpdateProduct.rejected]:(state,action)=>{
+return{
+  ...state,
+  UpdateProductStatus:"failed"
+}
     },
     [DeleteProduct.fulfilled]:(state,action)=>{
       return{

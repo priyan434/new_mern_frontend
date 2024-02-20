@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { AddProduct } from "../../Features/ProductSlice";
+import { toast,ToastContainer } from 'react-toastify';
 const AddProductButton = ({category2}) => {
     // console.log(category2);
+    const status = useSelector((state) => state.products);
     const dispatch = useDispatch();
     const [productImage, setProductImage] = useState("");
 
@@ -14,6 +16,9 @@ const AddProductButton = ({category2}) => {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+
     const handleupload = (e) => {
         const file = e.target.files[0];
         transformfile(file);
@@ -34,15 +39,40 @@ const AddProductButton = ({category2}) => {
       setIsModalOpen(true);
     };
   
-    const closeModal = () => {
-      setIsModalOpen(false);
-    };
   
-    const handleSubmit = (e) => {
-      // Handle form submission logic here
+    useEffect(()=>{
+      if(status.addproductstatus=="pending"){
+        console.log("toast pending");
+        toast.info("adding", {
+          position: toast.POSITION.TOP_RIGHT
+        });
+       
+      }
+      if(status.addproductstatus=="success"){
+        console.log("toast success")
+        toast.success("product added", {
+          position: toast.POSITION.TOP_RIGHT
+        });
+        setCategory("")
+        setName("")
+        setId("")
+        setStock("")
+        setRating("")
+        setDescription("")
+        setPrice("")
+       
+        setProductImage("")
+      }
+      if(status.addproductstatus=="failed"){
+        toast.error("failed to add product", {
+          position: toast.POSITION.TOP_RIGHT
+        }); 
+      }
+    },[status.addproductstatus])
+  
+    const handleSubmit = (e) => {   
       e.preventDefault();
       
-
       dispatch(
         AddProduct({
           name,
@@ -54,14 +84,7 @@ const AddProductButton = ({category2}) => {
           rating,
           imageSrc: productImage,
         }))
-
-
-
-
-
-      // You can add additional logic for handling form submission
-      // For example, sending data to the server
-      closeModal(); // Close the modal after submitting the form
+    
     };
   
   return (
@@ -284,7 +307,7 @@ const AddProductButton = ({category2}) => {
               </div>
             </div>
           </div>
-
+          <ToastContainer />
           <div className="modal-action"></div>
         </div>
       </dialog>

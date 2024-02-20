@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddProduct, DeleteProduct } from "../../Features/ProductSlice";
 import Ad_ProductCard from "./Ad_ProductCard";
 import AddProductButton from "./AddProductButton";
+import { toast,ToastContainer } from 'react-toastify';
 const Ad_products = () => {
-  // const products = useSelector((state) => state.products.products);
+  const status = useSelector((state) => state.products);
   const [products, setProducts] = useState([]);
   const addproductstatus = useSelector((state) => state.products);
   const [productImage, setProductImage] = useState("");
@@ -25,6 +26,14 @@ const Ad_products = () => {
 
   const numberOfItems = products.length;
   const numberOfPages = Math.ceil(numberOfItems / numberPerPage);
+
+
+ 
+
+
+
+
+
   const handleupload = (e) => {
     const file = e.target.files[0];
     transformfile(file);
@@ -101,40 +110,7 @@ const Ad_products = () => {
   const cat = products.map((ele) => ele.category);
   const category2 = [...new Set(cat)];
   useEffect(() => {
-    const handleSuccess = () => {
-      setName("");
-      setCategory("");
-      setId("");
-      setPrice("");
-      setDescription("");
-      setStock("");
-      setRating("");
-      alert("Success");
-    };
-
-    const handleFailure = () => {
-      alert("Failed to add product");
-    };
-
-    const handlePending = () => {
-      alert("Please wait...");
-    };
-
-    switch (addproductstatus.addproductstatus) {
-      case "success":
-        handleSuccess();
-        break;
-      case "failed to add":
-        handleFailure();
-        break;
-      case "pending":
-        handlePending();
-        break;
-      // Add more cases as needed
-
-      default:
-      // Handle other cases if necessary
-    }
+ 
   }, [addproductstatus]);
   const products2 = useSelector((state) => state.filter.filter);
   return (
@@ -285,6 +261,7 @@ const Ad_products = () => {
                 </div>
               </ul>
             </nav>
+            <ToastContainer />
           </div>
         </div>
       </section>

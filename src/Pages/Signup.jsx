@@ -19,7 +19,7 @@ const navigate=useNavigate();
     password:"",
   })
 
-  console.log(user);
+  // console.log(user);
   const handlesubmit=(e)=>{
     e.preventDefault();
     dispatch(registerUser(user))
